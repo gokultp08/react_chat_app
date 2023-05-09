@@ -11,18 +11,39 @@ import ErrorPage from "./components/error-page/ErrorPage";
 import UserShell from "./user/components/user-shell/UserShell";
 import CreateUser from "./user/components/create-user/CreateUser";
 import UserList from "./user/components/user-list/UserList";
+import UserDetails from "./user/components/user-details/UserDetails";
 
 export const routes = createBrowserRouter([
-  { path: "/", element: <App />, errorElement: <ErrorPage /> },
-  { path: "/login", element: <Login /> },
-  { path: "/home", element: <Home /> },
   {
-    path: "user",
-    element: <UserShell />,
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
     children: [
-      { path: "/user/:id", element: <CreateUser /> },
-      { path: "/user/new", element: <CreateUser /> },
-      { path: "/user/list", element: <UserList /> },
+      { path: "login", element: <Login /> },
+      { path: "home", element: <Home /> },
+      {
+        path: "user",
+        element: <UserShell />,
+        lazy: () => import("./user/components/user-shell/UserShell"),
+        children: [
+          {
+            path: "/user/:id",
+            element: <UserDetails />,
+            loader: async () => {
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve("THis is data");
+                  // resolve({
+                  //   data2: "User Data",
+                  // });
+                }, 2500);
+              });
+            },
+          },
+          { path: "/user/new", element: <CreateUser /> },
+          { path: "/user/list", element: <UserList /> },
+        ],
+      },
     ],
   },
 ]);

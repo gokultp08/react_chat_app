@@ -1,7 +1,7 @@
 function Header() {
   return (
     <div>
-      <label>My React App</label>
+      <h5>Header</h5>
     </div>
   );
 }
