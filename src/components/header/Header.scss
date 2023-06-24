@@ -1,0 +1,20 @@
+.header {
+  width: 100%;
+  min-height: 5rem;
+  background-color: #2127b3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding-left: 1rem;
+  // padding-right: 1rem;
+}
+.title {
+  margin-left: 2rem;
+}
+.actions {
+  margin-right: 2rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
