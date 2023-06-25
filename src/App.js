@@ -13,6 +13,9 @@ function App() {
         main: "#2a5298",
         darker: "#1e3c72",
       },
+      secondary: {
+        main: "#edf2ff",
+      },
     },
   });
   return (
