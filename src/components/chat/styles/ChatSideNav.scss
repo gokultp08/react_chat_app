@@ -1,0 +1,11 @@
+.chat-side-nav {
+  width: 100%;
+  background-color: lightblue;
+  padding: 4%;
+  .list {
+    margin-top: 2rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow-y: auto;
+  }
+}
