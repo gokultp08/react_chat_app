@@ -13,13 +13,15 @@
   //   gap: 1rem;
   width: 100%;
   background-color: orange;
-  max-height: 50%;
+  height: 80%;
   .chat-list {
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid black;
     padding: 1rem;
+    gap: 0.5rem;
+    // max-height: 67%;
   }
 }
 .send-chat {
@@ -30,4 +32,17 @@
   height: fit-content;
   padding: 0.5rem 1rem;
   gap: 1rem;
+}
+.chat-item {
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+  min-width: 40%;
+  max-width: 70%;
+  background-color: blueviolet;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }

@@ -24,6 +24,13 @@ const routes = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    index: 1,
+    children: [{ path: "", element: <Login />, index: true }],
+  },
 ]);
 
 export default function AppRouter() {

@@ -10,6 +10,7 @@ import {
 import ImageIcon from "@mui/icons-material/Image";
 
 import "./styles/ChatSideNav.scss";
+import React from "react";
 
 function ChatSideNav() {
   const data = [
@@ -31,8 +32,8 @@ function ChatSideNav() {
       <List className="list" sx={{ width: "82%" }}>
         {data.map((item, index) => {
           return (
-            <>
-              <ListItem key={index}>
+            <React.Fragment key={index}>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
@@ -41,7 +42,7 @@ function ChatSideNav() {
                 <ListItemText primary="senderId" />
               </ListItem>
               <Divider />
-            </>
+            </React.Fragment>
           );
         })}
       </List>
