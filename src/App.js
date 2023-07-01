@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import "./App.scss";
+import { SnackBarProvider } from "./context/SnackBarProvider";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -20,9 +21,11 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <div className="main">
-        <Outlet />
-      </div>
+      <SnackBarProvider>
+        <div className="main">
+          <Outlet />
+        </div>
+      </SnackBarProvider>
     </ThemeProvider>
   );
 }

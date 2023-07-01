@@ -1,4 +1,11 @@
+import "./User.scss";
+import UserForm from "./UserForm";
+
 function UserShell() {
-  return <div>Edit USer here!!!!!!!!!!!!!</div>;
+  return (
+    <div className="user-shell">
+      <UserForm />
+    </div>
+  );
 }
 export default UserShell;

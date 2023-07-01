@@ -1,8 +1,8 @@
-import { Divider } from "@mui/material";
+import { useState } from "react";
 import ChatItem from "./ChatItem";
 import SendChat from "./SendChat";
+
 import "./styles/ChatContent.scss";
-import { useState } from "react";
 
 function ChatMessageContent() {
   const [data, setData] = useState([
@@ -32,7 +32,8 @@ function ChatMessageContent() {
     },
     {
       id: "876868",
-      content: "fdsafffffffff        dfgdfg   gdfgffffffffff",
+      content: `fdsafffffffff        dfgdfg   gdfgffffffffff  gfdf1
+      gfdgdfggDfgg dfggfgggggggggggggggggggggggggg ggggggggggggggggggggggggggggggggg ggggggggggggggggggg`,
       senderId: "2345",
       receiverId: "1234",
     },

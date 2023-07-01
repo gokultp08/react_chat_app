@@ -7,7 +7,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
+
 import "./Register.scss";
+import { SnackbarContext } from "../../context/SnackBarProvider";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -20,14 +22,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Register(props) {
+  const { sendMessage } = React.useContext(SnackbarContext);
+
   const { onClose, open } = props;
 
   const handleClose = (value) => {
     onClose(value);
   };
 
-  const handleLogin = () => {
-    // navigate("/chat");
+  const handleRegister = () => {
+    sendMessage("User Created");
   };
 
   return (
@@ -49,8 +53,8 @@ export default function Register(props) {
           <TextField id="bio" label="Bio" variant="standard" />
           <TextField id="password" label="Password" variant="standard" />
           <div className="buttons">
-            <Button variant="contained" onClick={() => handleLogin}>
-              Login
+            <Button variant="contained" onClick={() => handleRegister}>
+              Register
             </Button>
             <Button variant="outlined" onClick={() => handleClose(null)}>
               Close

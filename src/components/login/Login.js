@@ -9,15 +9,21 @@ import Link from "@mui/material/Link";
 import { useState } from "react";
 import "./Login.scss";
 import Register from "../register/Register";
+import { useContext } from "react";
+import { SnackbarContext } from "../../context/SnackBarProvider";
 
 export default function Login() {
+  const { sendMessage } = useContext(SnackbarContext);
+
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+
   const handleLogin = () => {
+    sendMessage("Logged In");
     navigate("/chat");
   };
-  const [open, setOpen] = useState(false);
-
-  const [selectedValue, setSelectedValue] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,6 +35,7 @@ export default function Login() {
   };
 
   const handleReset = () => {};
+
   return (
     <div className="login">
       <Card sx={{ minWidth: 275, padding: "1rem" }}>
