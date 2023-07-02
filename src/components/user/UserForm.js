@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 
 import "./User.scss";
 import { SnackbarContext } from "../../context/SnackBarProvider";
@@ -17,6 +17,9 @@ function UserForm() {
 
   return (
     <div className="user-form">
+      <Typography variant="h4" gutterBottom>
+        Edit User
+      </Typography>
       <div className="name-div">
         <div className="names">
           <TextField id="name" label="Name" variant="standard" />

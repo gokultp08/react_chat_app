@@ -7,6 +7,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
+import { LoadingButton } from "@mui/lab";
 
 import "./Register.scss";
 import { SnackbarContext } from "../../context/SnackBarProvider";
@@ -24,6 +25,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export default function Register(props) {
   const { sendMessage } = React.useContext(SnackbarContext);
 
+  const [loading, setLoading] = React.useState(false);
+
   const { onClose, open } = props;
 
   const handleClose = (value) => {
@@ -31,6 +34,7 @@ export default function Register(props) {
   };
 
   const handleRegister = () => {
+    setLoading(true);
     sendMessage("User Created");
   };
 
@@ -53,9 +57,16 @@ export default function Register(props) {
           <TextField id="bio" label="Bio" variant="standard" />
           <TextField id="password" label="Password" variant="standard" />
           <div className="buttons">
-            <Button variant="contained" onClick={() => handleRegister}>
-              Register
-            </Button>
+            {!loading && (
+              <Button variant="contained" onClick={() => handleRegister()}>
+                Register
+              </Button>
+            )}
+            {loading && (
+              <LoadingButton loading variant="contained">
+                Register
+              </LoadingButton>
+            )}
             <Button variant="outlined" onClick={() => handleClose(null)}>
               Close
             </Button>
