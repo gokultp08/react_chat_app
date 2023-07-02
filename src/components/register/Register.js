@@ -11,6 +11,7 @@ import { LoadingButton } from "@mui/lab";
 
 import "./Register.scss";
 import { SnackbarContext } from "../../context/SnackBarProvider";
+import { addUser } from "../../services/user-service";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -26,6 +27,13 @@ export default function Register(props) {
   const { sendMessage } = React.useContext(SnackbarContext);
 
   const [loading, setLoading] = React.useState(false);
+  const [userData, setUserData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    bio: "",
+    image: "",
+  });
 
   const { onClose, open } = props;
 
@@ -35,13 +43,44 @@ export default function Register(props) {
 
   const handleRegister = () => {
     setLoading(true);
-    sendMessage("User Created");
+    console.log("userData", userData);
+    addUser(userData)
+      .then((res) => {
+        sendMessage("User Created");
+        onClose(null);
+      })
+      .catch((err) => {
+        sendMessage(JSON.stringify(err));
+        setLoading(false);
+      });
+  };
+
+  const handleInputChange = (type, value) => {
+    const newValue = { ...userData };
+    switch (type) {
+      case "name":
+        newValue.name = value;
+        break;
+      case "email":
+        newValue.email = value;
+        break;
+      case "bio":
+        newValue.bio = value;
+        break;
+      case "password":
+        newValue.password = value;
+        break;
+      case "image":
+        newValue.image = value;
+        break;
+    }
+    setUserData(newValue);
   };
 
   return (
     <BootstrapDialog onClose={handleClose} open={open}>
       <DialogTitle>
-        <Typography variant="h4" gutterBottom>
+        <Typography component={"span"} variant="h5" gutterBottom>
           Create New User Account
         </Typography>
       </DialogTitle>
@@ -49,13 +88,33 @@ export default function Register(props) {
         <div className="main-form">
           <div className="name">
             <div className="email">
-              <TextField id="name" label="Name" variant="standard" />
-              <TextField id="email" label="Email" variant="standard" />
+              <TextField
+                id="name"
+                label="Name"
+                variant="standard"
+                onChange={(e) => handleInputChange("name", e.target.value)}
+              />
+              <TextField
+                id="email"
+                label="Email"
+                variant="standard"
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              />
             </div>
             <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600" />
           </div>
-          <TextField id="bio" label="Bio" variant="standard" />
-          <TextField id="password" label="Password" variant="standard" />
+          <TextField
+            id="bio"
+            label="Bio"
+            variant="standard"
+            onChange={(e) => handleInputChange("bio", e.target.value)}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            variant="standard"
+            onChange={(e) => handleInputChange("password", e.target.value)}
+          />
           <div className="buttons">
             {!loading && (
               <Button variant="contained" onClick={() => handleRegister()}>
