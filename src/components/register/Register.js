@@ -44,6 +44,7 @@ export default function Register(props) {
   const handleRegister = () => {
     setLoading(true);
     console.log("userData", userData);
+    userData.image = "dasdfsdf";
     addUser(userData)
       .then((res) => {
         sendMessage("User Created");

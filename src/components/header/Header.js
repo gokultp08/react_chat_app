@@ -11,10 +11,14 @@ import { SnackbarContext } from "../../context/SnackBarProvider";
 
 export default function Header() {
   const { sendMessage } = useContext(SnackbarContext);
+  // const { setLoggedInUser, setIsLoggedIn } = useContext(UserDispatchContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    // setLoggedInUser(undefined);
+    // setIsLoggedIn(false);
+    localStorage.clear();
     sendMessage("Logged Out");
     navigate("/login");
   };
@@ -49,7 +53,7 @@ export default function Header() {
           </IconButton>
         </Tooltip>
         <Tooltip title="Logout">
-          <IconButton onClick={handleLogout} color="secondary">
+          <IconButton onClick={() => handleLogout()} color="secondary">
             <LogoutIcon />
           </IconButton>
         </Tooltip>

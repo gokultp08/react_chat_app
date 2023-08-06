@@ -11,6 +11,9 @@ import "./Login.scss";
 import Register from "../register/Register";
 import { useContext } from "react";
 import { SnackbarContext } from "../../context/SnackBarProvider";
+import { getAllUsers, login } from "../../services/user-service";
+import { UserActions } from "../../store/UserReducer";
+import store from "../../store/store";
 
 export default function Login() {
   const { sendMessage } = useContext(SnackbarContext);
@@ -18,10 +21,55 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [loginData, setLoginData] = useState({
+    username: "",
+    password: "",
+  });
+  const [userData, setUserData] = useState({
+    loggedIn: false,
+    currentUser: undefined,
+    allUsers: [],
+  });
 
-  const handleLogin = () => {
-    sendMessage("Logged In");
+  const handleLogin = async () => {
+    login(loginData)
+      .then((res) => {
+        const user = res.data.user;
+        localStorage.setItem("userId", user["_id"]);
+        localStorage.setItem("token", res.data.token);
+        fetchAllUsers({
+          email: user.email,
+          name: user.name,
+          bio: user.name,
+          image: user.name,
+        });
+      })
+      .catch((err) => {
+        sendMessage(JSON.stringify(err));
+      });
+  };
+
+  const fetchAllUsers = async (currentUser) => {
+    const result = await getAllUsers();
+    const allUsers = result.data.map((item) => {
+      return {
+        id: item["_id"],
+        email: item.email,
+        name: item.name,
+        bio: item.name,
+        image: item.name,
+      };
+    });
+    store.dispatch({
+      type: UserActions.STORE_CURRENT_USER,
+      payload: currentUser,
+    });
+    store.dispatch({
+      type: UserActions.STORE_ALL_USERS,
+      payload: allUsers,
+    });
+    sendMessage("User Logged In");
+
     navigate("/chat");
   };
 
@@ -29,12 +77,24 @@ export default function Login() {
     setOpen(true);
   };
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
-    setSelectedValue(value);
   };
 
   const handleReset = () => {};
+
+  const handleInputChange = (type, value) => {
+    const newValue = { ...loginData };
+    switch (type) {
+      case "username":
+        newValue.username = value;
+        break;
+      case "password":
+        newValue.password = value;
+        break;
+    }
+    setLoginData(newValue);
+  };
 
   return (
     <div className="login">
@@ -45,20 +105,22 @@ export default function Login() {
             id="standard-required"
             label="Username"
             variant="standard"
+            onChange={(e) => handleInputChange("username", e.target.value)}
           />
           <TextField
             required
             id="standard-required"
             label="Password"
             variant="standard"
+            onChange={(e) => handleInputChange("password", e.target.value)}
           />
         </CardContent>
         <CardActions className="card">
           <div className="buttons">
-            <Button variant="contained" onClick={handleLogin}>
+            <Button variant="contained" onClick={() => handleLogin()}>
               Login
             </Button>
-            <Button variant="outlined" onClick={handleReset}>
+            <Button variant="outlined" onClick={() => handleReset()}>
               Reset
             </Button>
           </div>
@@ -74,11 +136,7 @@ export default function Login() {
           </Link>
         </CardActions>
       </Card>
-      <Register
-        selectedValue={selectedValue}
-        open={open}
-        onClose={handleClose}
-      />
+      <Register open={open} onClose={() => handleClose()} />
     </div>
   );
 }
