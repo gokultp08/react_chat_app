@@ -11,35 +11,35 @@ import ImageIcon from "@mui/icons-material/Image";
 
 import "./styles/ChatSideNav.scss";
 import React from "react";
+import { selectUser } from "../../store/slices/userSlice";
+import { useSelector } from "react-redux";
 
-function ChatSideNav() {
-  const data = [
-    {
-      senderId: "123",
-      receiverId: "123",
-      image: "gdfgdsgf",
-    },
-    {
-      senderId: "5435",
-      receiverId: "5345",
-      image: "gdfgdsgf",
-    },
-  ];
+function ChatSideNav(props) {
+  const { setChat } = props;
+  const userState = useSelector(selectUser);
+  // bio: "gokul";
+  // email: "gokul@gmail.com";
+  // id: "6485ef2dc4ca7c3da9d73ab5";
+  // image: "gokul";
+  // name: "gokul";
+  const availableUsers = userState.allUsers.filter(
+    (item) => item.id !== userState.currentUser.id
+  );
 
   return (
     <div className="chat-side-nav">
       <TextField variant="outlined" sx={{ width: "92%", bgcolor: "#fffff" }} />
       <List className="list" sx={{ width: "82%" }}>
-        {data.map((item, index) => {
+        {availableUsers.map((item, index) => {
           return (
             <React.Fragment key={index}>
-              <ListItem>
+              <ListItem onClick={() => setChat(item)}>
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary="senderId" />
+                <ListItemText primary={item.name} />
               </ListItem>
               <Divider />
             </React.Fragment>

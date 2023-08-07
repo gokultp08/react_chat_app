@@ -1,16 +1,19 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BallTriangle } from "react-loader-spinner";
 
 import "./App.scss";
 import { SnackBarProvider } from "./context/SnackBarProvider";
-import { useContext, useEffect } from "react";
-import { Provider } from "react-redux";
-import store from "./store/store";
 import { getAllUsers, verify } from "./services/user-service";
-import { UserActions } from "./store/UserReducer";
+import { storeAllUsers, storeCurrentUser } from "./store/slices/userSlice";
+import { selectApp, setLoading } from "./store/slices/appSlice";
 
 function App() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loading = useSelector(selectApp).loading;
 
   const theme = createTheme({
     palette: {
@@ -26,51 +29,74 @@ function App() {
 
   useEffect(() => {
     const loadIfLoggedIn = async (userId, token) => {
-      const user = await verify({ userId, token });
-      store.dispatch({
-        type: UserActions.STORE_CURRENT_USER,
-        payload: {
-          email: user.data.email,
-          name: user.data.name,
-          bio: user.data.name,
-          image: user.data.name,
+      verify({ userId, token }).then(
+        async (user) => {
+          console.log("userrrrrr", user);
+          const users = await getAllUsers();
+          const allUsers = users.data.map((item) => {
+            return {
+              id: item["_id"],
+              email: item.email,
+              name: item.name,
+              bio: item.name,
+              image: item.name,
+            };
+          });
+          dispatch(
+            storeCurrentUser({
+              email: user.data.user.email,
+              name: user.data.user.name,
+              bio: user.data.user.bio,
+              image: user.data.user.image,
+              id: user.data.user["_id"],
+            })
+          );
+          dispatch(storeAllUsers(allUsers));
+          dispatch(setLoading(false));
         },
-      });
-      const users = await getAllUsers();
-      const allUsers = users.data.map((item) => {
-        return {
-          id: item["_id"],
-          email: item.email,
-          name: item.name,
-          bio: item.name,
-          image: item.name,
-        };
-      });
-      store.dispatch({
-        type: UserActions.STORE_ALL_USERS,
-        payload: allUsers,
-      });
+        (err) => {
+          localStorage.clear();
+          navigate("/login");
+        }
+      );
     };
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
     if (userId && token) {
+      dispatch(setLoading(true));
       loadIfLoggedIn(userId, token);
     } else {
       navigate("/login");
     }
-  }, []);
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="loader">
+        <BallTriangle
+          height={100}
+          width={100}
+          radius={5}
+          color="blue"
+          ariaLabel="ball-triangle-loading"
+          wrapperClass={{}}
+          wrapperStyle=""
+          visible={true}
+        />
+      </div>
+    );
+  }
+
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <SnackBarProvider>
-          <div className="main">
-            <Outlet />
-          </div>
-        </SnackBarProvider>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <SnackBarProvider>
+        <div className="main">
+          <Outlet />
+        </div>
+      </SnackBarProvider>
+    </ThemeProvider>
   );
 }
 

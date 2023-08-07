@@ -12,23 +12,19 @@ import Register from "../register/Register";
 import { useContext } from "react";
 import { SnackbarContext } from "../../context/SnackBarProvider";
 import { getAllUsers, login } from "../../services/user-service";
-import { UserActions } from "../../store/UserReducer";
-import store from "../../store/store";
+import { storeAllUsers, storeCurrentUser } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const { sendMessage } = useContext(SnackbarContext);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
-  });
-  const [userData, setUserData] = useState({
-    loggedIn: false,
-    currentUser: undefined,
-    allUsers: [],
   });
 
   const handleLogin = async () => {
@@ -60,16 +56,9 @@ export default function Login() {
         image: item.name,
       };
     });
-    store.dispatch({
-      type: UserActions.STORE_CURRENT_USER,
-      payload: currentUser,
-    });
-    store.dispatch({
-      type: UserActions.STORE_ALL_USERS,
-      payload: allUsers,
-    });
+    dispatch(storeCurrentUser(currentUser));
+    dispatch(storeAllUsers(allUsers));
     sendMessage("User Logged In");
-
     navigate("/chat");
   };
 
