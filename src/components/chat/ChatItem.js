@@ -2,12 +2,15 @@ import "./styles/ChatContent.scss";
 import DoneIcon from "@mui/icons-material/Done";
 
 function ChatItem(props) {
-  const myId = "1234";
+  const { currentUser, chat } = props;
+
+ 
   return (
     <div
       className="chat-item"
       style={{
-        alignSelf: props.chat.senderId !== myId ? "flex-start" : "flex-end",
+        alignSelf:
+          props.chat.sender !== currentUser ? "flex-start" : "flex-end",
       }}
     >
       {props.chat.content}

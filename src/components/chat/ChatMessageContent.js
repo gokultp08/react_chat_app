@@ -4,73 +4,17 @@ import SendChat from "./SendChat";
 
 import "./styles/ChatContent.scss";
 
-function ChatMessageContent() {
-  const [data, setData] = useState([
-    {
-      id: "324234234",
-      content: "hi",
-      senderId: "1234",
-      receiverId: "2345",
-    },
-    {
-      id: "6546456",
-      content: "hello",
-      senderId: "2345",
-      receiverId: "1234",
-    },
-    {
-      id: "65463456",
-      content: "fdsaffffdsfa fsdafasd f  f ds f sad f ads f ffffffffffffffff",
-      senderId: "1234",
-      receiverId: "2345",
-    },
-    {
-      id: "23453254",
-      content: "fdsafffffffffffffffffff",
-      senderId: "1234",
-      receiverId: "2345",
-    },
-    {
-      id: "876868",
-      content: `fdsafffffffff        dfgdfg   gdfgffffffffff  gfdf1
-      gfdgdfggDfgg dfggfgggggggggggggggggggggggggg ggggggggggggggggggggggggggggggggg ggggggggggggggggggg`,
-      senderId: "2345",
-      receiverId: "1234",
-    },
-    {
-      id: "54352345",
-      content: "fdsafffffffffffffffffff",
-      senderId: "2345",
-      receiverId: "1234",
-    },
-    {
-      id: "54352435",
-      content: "fdsafffffffffffffffffff",
-      senderId: "1234",
-      receiverId: "2345",
-    },
-    {
-      id: "534534531",
-      content: "fdsafffffffffffffffffff",
-      senderId: "2345",
-      receiverId: "1234",
-    },
-    {
-      id: "54353451",
-      content: "fdsafffffffffffffffffff",
-      senderId: "1234",
-      receiverId: "2345",
-    },
-  ]);
+function ChatMessageContent(props) {
+  const { sendMessage, receiverDetails, chats, currentUser } = props;
 
   return (
     <div className="chat-message-content">
       <div className="chat-list">
-        {data.map((item, index) => {
-          return <ChatItem key={index} chat={item} />;
+        {chats.map((item, index) => {
+          return <ChatItem key={index} chat={item} currentUser={currentUser} />;
         })}
       </div>
-      <SendChat />
+      <SendChat sendMessage={sendMessage} />
     </div>
   );
 }

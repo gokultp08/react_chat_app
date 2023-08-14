@@ -2,11 +2,12 @@ import ChatHeader from "./ChatHeader";
 import ChatMessageContent from "./ChatMessageContent";
 import "./styles/ChatContent.scss";
 
-function ChatContent() {
+function ChatContent(props) {
+  const { sendMessage, receiverDetails, chats, currentUser } = props;
   return (
     <div className="chat-content">
-      <ChatHeader />
-      <ChatMessageContent />
+      <ChatHeader receiverDetails={receiverDetails} />
+      <ChatMessageContent sendMessage={sendMessage} chats={chats} currentUser ={currentUser}/>
     </div>
   );
 }

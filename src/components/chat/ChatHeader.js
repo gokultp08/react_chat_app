@@ -1,11 +1,12 @@
 import { Typography } from "@mui/material";
 import "./styles/ChatContent.scss";
 
-function ChatHeader() {
+function ChatHeader(props) {
+  const { receiverDetails } = props;
   return (
     <div className="chat-header">
       <Typography variant="h5" gutterBottom>
-        USerName
+        {receiverDetails?.name}
       </Typography>
     </div>
   );
